@@ -98,6 +98,7 @@ int main(void)
     const int seg7_switch_duration_ms = 1000;
     const int dot_blink_duration_ms = 1000;
     const int matrix_column_switch_duration_ms = 500;
+    const int matrix_pattern_roll_duration_ms = matrix_column_switch_duration_ms * 8;
 
     int hour = 15, minute = 8, second = 50;
 
@@ -105,6 +106,7 @@ int main(void)
     setTimer1(seg7_switch_duration_ms);
     setTimer2(dot_blink_duration_ms);
     setTimer3(matrix_column_switch_duration_ms);
+    setTimer4(matrix_pattern_roll_duration_ms);
 
     while (1)
     {
@@ -138,6 +140,12 @@ int main(void)
             setTimer3(matrix_column_switch_duration_ms);
             updateLEDMatrix(index_led_matrix);
             index_led_matrix = (index_led_matrix + 1) % LED_MATRIX_SIZE;
+        }
+        // upadte the led matrix pattern
+        if (timer4_flag == SET)
+        {
+            setTimer4(matrix_pattern_roll_duration_ms);
+            roll_matrix_pattern_right();
         }
     /* USER CODE END WHILE */
 

@@ -130,3 +130,14 @@ void updateLEDMatrix(int index)
 
     enable_column(index);
 }
+void roll_matrix_pattern_right()
+{
+    uint8_t last_column = matrix_buffer[LED_MATRIX_SIZE];
+
+    for (int32_t i = 1; i < LED_MATRIX_SIZE; i++)
+    {
+        matrix_buffer[i] = matrix_buffer[i-1];
+    }
+
+    matrix_buffer[0] = last_column;
+}

@@ -67,4 +67,6 @@ void disable_all_column();
 void enable_column(int value);
 void updateLEDMatrix(int index);
 
+void roll_matrix_pattern_right();
+
 #endif /* INC_USER_CODE_H_ */
