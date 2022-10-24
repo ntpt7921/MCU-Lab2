@@ -34,9 +34,13 @@
 
 extern int16_t seg7_pattern_list[];
 extern int16_t control_line_list[NUMBER_OF_SEG7];
+extern int index_led;
+extern int led_buffer[NUMBER_OF_SEG7];
 
 void set_output_pattern_7seg(int32_t value);
 void disable_7seg(int32_t value);
+void disable_all_7seg();
 void enable_7seg(int32_t value);
+void update7SEG(int index);
 
 #endif /* INC_USER_CODE_H_ */

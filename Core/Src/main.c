@@ -232,9 +232,6 @@ int counter_led_singular_blink = counter_led_singular_blink_max;
 int counter_seg7_switch = counter_seg7_switch_max;
 int counter_dot = counter_dot_max;
 
-int current_seg7 = 0;
-int last_seg7;
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     counter_led_singular_blink--;
@@ -252,25 +249,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
         counter_seg7_switch = counter_seg7_switch_max;
 
-        last_seg7 = current_seg7;
-        current_seg7 = (current_seg7 + 1) % NUMBER_OF_SEG7;
-
-        disable_7seg(last_seg7);
-
-        switch (current_seg7)
-        {
-            case 0:
-                set_output_pattern_7seg(1);
-                break;
-            case 1:
-                set_output_pattern_7seg(2);
-                break;
-
-            default:
-                break;
-        }
-
-        enable_7seg(current_seg7);
+        update7SEG(index_led);
+        index_led = (index_led + 1) % NUMBER_OF_SEG7;
     }
 
     if (counter_dot <= 0)
