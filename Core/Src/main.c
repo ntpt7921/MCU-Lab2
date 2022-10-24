@@ -226,7 +226,7 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 const int counter_led_singular_blink_max = 100;
-const int counter_seg7_switch_max = 50;
+const int counter_seg7_switch_max = 100;
 const int counter_dot_max = 100;
 int counter_led_singular_blink = counter_led_singular_blink_max;
 int counter_seg7_switch = counter_seg7_switch_max;
