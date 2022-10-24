@@ -42,5 +42,6 @@ void disable_7seg(int32_t value);
 void disable_all_7seg();
 void enable_7seg(int32_t value);
 void update7SEG(int index);
+void updateClockBuffer();
 
 #endif /* INC_USER_CODE_H_ */
