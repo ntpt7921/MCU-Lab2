@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "user_code.h"
+#include "software_timer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,31 +94,44 @@ int main(void)
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
+    const int led_singular_blink_duration_ms = 1000;
+    const int seg7_switch_duration_ms = 1000;
+    const int dot_blink_duration_ms = 1000;
+
     int hour = 15, minute = 8, second = 50;
+
+    setTimer0(led_singular_blink_duration_ms);
+    setTimer1(seg7_switch_duration_ms);
+    setTimer2(dot_blink_duration_ms);
+
     while (1)
     {
         /* USER CODE END WHILE */
-        second++;
 
-        if (second >= 60)
+        // toogle LED
+        if (timer0_flag == SET)
         {
-            second = 0;
-            minute++;
+            HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+            setTimer0(led_singular_blink_duration_ms);
         }
-
-        if (minute >= 60)
+        // update seg7
+        if (timer1_flag == SET)
         {
-            minute = 0;
-            hour++;
+            update7SEG(index_led);
+            index_led = (index_led + 1) % NUMBER_OF_SEG7;
+            setTimer1(seg7_switch_duration_ms);
         }
-
-        if (hour >= 24)
+        // blink dot
+        if (timer2_flag == SET)
         {
-            hour = 0;
-        }
+            HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+            setTimer2(dot_blink_duration_ms);
 
-        updateClockBuffer(hour, minute);
-        HAL_Delay(1000);
+            // update the time too
+            // bacause dot blink duration is set to 1s
+            increment_time(&hour, &minute, &second);
+            updateClockBuffer(hour, minute);
+        }
         /* USER CODE BEGIN 3 */
     }
     /* USER CODE END 3 */
@@ -246,40 +260,11 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-const int counter_led_singular_blink_max = 100;
-const int counter_seg7_switch_max = 100;
-const int counter_dot_max = 100;
-int counter_led_singular_blink = counter_led_singular_blink_max;
-int counter_seg7_switch = counter_seg7_switch_max;
-int counter_dot = counter_dot_max;
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    counter_led_singular_blink--;
-    counter_seg7_switch--;
-    counter_dot--;
-
-    if (counter_led_singular_blink <= 0)
-    {
-        counter_led_singular_blink = counter_led_singular_blink_max;
-
-        HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-    }
-
-    if (counter_seg7_switch <= 0)
-    {
-        counter_seg7_switch = counter_seg7_switch_max;
-
-        update7SEG(index_led);
-        index_led = (index_led + 1) % NUMBER_OF_SEG7;
-    }
-
-    if (counter_dot <= 0)
-    {
-        counter_dot = counter_dot_max;
-
-        HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
-    }
+    timer0_run();
+    timer1_run();
+    timer2_run();
 }
 /* USER CODE END 4 */
 
