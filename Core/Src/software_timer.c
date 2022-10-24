@@ -43,11 +43,11 @@ void setTimer1(int duration)
 }
 void timer1_run()
 {
-    if (timer1_counter > 1)
+    if (timer1_counter > 0)
     {
         timer1_counter--;
     }
-    else if (timer1_counter <= 1)
+    else if (timer1_counter <= 0)
     {
         timer1_flag = SET;
     }
@@ -60,11 +60,11 @@ void setTimer2(int duration)
 }
 void timer2_run()
 {
-    if (timer2_counter > 2)
+    if (timer2_counter > 0)
     {
         timer2_counter--;
     }
-    else if (timer2_counter <= 2)
+    else if (timer2_counter <= 0)
     {
         timer2_flag = SET;
     }
