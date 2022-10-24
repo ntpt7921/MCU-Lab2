@@ -97,33 +97,35 @@ int main(void)
     const int led_singular_blink_duration_ms = 1000;
     const int seg7_switch_duration_ms = 1000;
     const int dot_blink_duration_ms = 1000;
+    const int matrix_column_switch_duration_ms = 500;
 
     int hour = 15, minute = 8, second = 50;
 
     setTimer0(led_singular_blink_duration_ms);
     setTimer1(seg7_switch_duration_ms);
     setTimer2(dot_blink_duration_ms);
+    setTimer3(matrix_column_switch_duration_ms);
 
     while (1)
     {
         // toogle LED
         if (timer0_flag == SET)
         {
-            HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
             setTimer0(led_singular_blink_duration_ms);
+            HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
         }
         // update seg7
         if (timer1_flag == SET)
         {
+            setTimer1(seg7_switch_duration_ms);
             update7SEG(index_led);
             index_led = (index_led + 1) % NUMBER_OF_SEG7;
-            setTimer1(seg7_switch_duration_ms);
         }
         // blink dot
         if (timer2_flag == SET)
         {
-            HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
             setTimer2(dot_blink_duration_ms);
+            HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 
             // update the time too
             // bacause dot blink duration is set to 1s
@@ -133,6 +135,7 @@ int main(void)
         // update led dot matrix
         if (timer3_flag == SET)
         {
+            setTimer3(matrix_column_switch_duration_ms);
             updateLEDMatrix(index_led_matrix);
             index_led_matrix = (index_led_matrix + 1) % LED_MATRIX_SIZE;
         }
