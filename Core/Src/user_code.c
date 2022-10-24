@@ -71,6 +71,28 @@ void update7SEG(int index)
     }
     enable_7seg(index);
 }
+void increment_time(int *hour, int *minute, int *second)
+{
+
+    (*second)++;
+
+    if (*second >= 60)
+    {
+        *second = 0;
+        (*minute)++;
+    }
+
+    if (*minute >= 60)
+    {
+        *minute = 0;
+        (*hour)++;
+    }
+
+    if (*hour >= 24)
+    {
+        *hour = 0;
+    }
+}
 void updateClockBuffer(int hour, int minute)
 {
     led_buffer[0] = hour / 10;
