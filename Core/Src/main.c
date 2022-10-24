@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "user_code.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -222,14 +222,49 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-int counter = 100;
+const int counter_led_singular_blink_max = 100;
+const int counter_half_second_max = 50;
+int counter_led_singular_blink = counter_led_singular_blink_max;
+int counter_half_second = counter_half_second_max;
+
+int current_seg7 = 0;
+int last_seg7;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    counter--;
-    if (counter <= 0)
+    counter_led_singular_blink--;
+    counter_half_second--;
+
+    if (counter_led_singular_blink <= 0)
     {
-        counter = 100;
+        counter_led_singular_blink = counter_led_singular_blink_max;
+
         HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+    }
+
+    if (counter_half_second <= 0)
+    {
+        counter_half_second = counter_led_singular_blink_max;
+
+        last_seg7 = current_seg7;
+        current_seg7 = (current_seg7 + 1) % NUMBER_OF_SEG7;
+
+        disable_7seg(last_seg7);
+
+        switch (current_seg7)
+        {
+            case 0:
+                set_output_pattern_7seg(1);
+                break;
+            case 1:
+                set_output_pattern_7seg(2);
+                break;
+
+            default:
+                break;
+        }
+
+        enable_7seg(current_seg7);
     }
 }
 /* USER CODE END 4 */
