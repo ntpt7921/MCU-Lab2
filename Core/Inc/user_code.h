@@ -30,6 +30,17 @@
 // assume all control pin is in the same port
 #define COMMON_CONTROL_PORT EN0_GPIO_Port
 
+#define COLUMN_CONTROL_LINE_0 ENM0_Pin
+#define COLUMN_CONTROL_LINE_1 ENM1_Pin
+#define COLUMN_CONTROL_LINE_2 ENM2_Pin
+#define COLUMN_CONTROL_LINE_3 ENM3_Pin
+#define COLUMN_CONTROL_LINE_4 ENM4_Pin
+#define COLUMN_CONTROL_LINE_5 ENM5_Pin
+#define COLUMN_CONTROL_LINE_6 ENM6_Pin
+#define COLUMN_CONTROL_LINE_7 ENM7_Pin
+// assume all column control line is in the same port
+#define COMMON_COLUMN_CONTROL_PORT ENM0_GPIO_Port
+
 #define NUMBER_OF_SEG7 4
 #define LED_MATRIX_SIZE 8
 
@@ -40,6 +51,7 @@ extern int led_buffer[NUMBER_OF_SEG7];
 
 extern int index_led_matrix;
 extern uint8_t matrix_buffer[LED_MATRIX_SIZE];
+extern int16_t col_enable_list[LED_MATRIX_SIZE];
 
 void set_output_pattern_7seg(int32_t value);
 void disable_7seg(int32_t value);
@@ -48,6 +60,11 @@ void enable_7seg(int32_t value);
 void update7SEG(int index);
 void increment_time(int *hour, int *minute, int *second);
 void updateClockBuffer();
+
+void set_output_pattern_matrix(int32_t value);
+void disable_column(int32_t value);
+void disable_all_column();
+void enable_column(int value);
 void updateLEDMatrix(int index);
 
 #endif /* INC_USER_CODE_H_ */
