@@ -132,6 +132,12 @@ int main(void)
             increment_time(&hour, &minute, &second);
             updateClockBuffer(hour, minute);
         }
+        // update led dot matrix
+        if (timer3_flag == SET)
+        {
+            updateLEDMatrix(index_led_matrix);
+            index_led_matrix = (index_led_matrix + 1) % LED_MATRIX_SIZE;
+        }
         /* USER CODE BEGIN 3 */
     }
     /* USER CODE END 3 */
@@ -265,6 +271,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     timer0_run();
     timer1_run();
     timer2_run();
+    timer3_run();
 }
 /* USER CODE END 4 */
 
