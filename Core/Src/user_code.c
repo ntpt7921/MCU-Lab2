@@ -16,6 +16,9 @@ int16_t control_line_list[NUMBER_OF_SEG7] = {
     CONTROL_LINE_0, CONTROL_LINE_1, CONTROL_LINE_2, CONTROL_LINE_3,
 };
 
+int index_led = 0;
+int led_buffer[NUMBER_OF_SEG7] = { 1, 2, 3, 4 };
+
 
 
 void set_output_pattern_7seg(int32_t value)
@@ -33,6 +36,11 @@ void disable_7seg(int32_t value)
 
     HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], RESET);
 }
+void disable_all_7seg()
+{
+    for (int32_t i = 0; i < NUMBER_OF_SEG7; i++)
+        disable_7seg(i);
+}
 void enable_7seg(int32_t value)
 {
     if (value < 0 || value > NUMBER_OF_SEG7)
@@ -40,4 +48,26 @@ void enable_7seg(int32_t value)
 
     HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], SET);
 }
+void update7SEG(int index)
+{
+    disable_all_7seg();
+    switch (index)
+    {
+        case 0:
+            set_output_pattern_7seg(led_buffer[index]);
+            break;
+        case 1:
+            set_output_pattern_7seg(led_buffer[index]);
+            break;
+        case 2:
+            set_output_pattern_7seg(led_buffer[index]);
+            break;
+        case 3:
+            set_output_pattern_7seg(led_buffer[index]);
+            break;
 
+        default:
+            break;
+    }
+    enable_7seg(index);
+}
