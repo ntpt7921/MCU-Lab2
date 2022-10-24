@@ -18,7 +18,10 @@ int16_t control_line_list[NUMBER_OF_SEG7] = {
 
 int index_led = 0;
 int led_buffer[NUMBER_OF_SEG7] = { 1, 2, 3, 4 };
-
+int index_led_matrix = 0;
+uint8_t matrix_buffer[LED_MATRIX_SIZE] = {
+    0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+};
 
 
 void set_output_pattern_7seg(int32_t value)
@@ -99,4 +102,8 @@ void updateClockBuffer(int hour, int minute)
     led_buffer[1] = hour % 10;
     led_buffer[2] = minute / 10;
     led_buffer[3] = minute % 10;
+}
+void updateLEDMatrix(int index)
+{
+
 }
