@@ -25,10 +25,12 @@
 
 #define CONTROL_LINE_0 EN0_Pin
 #define CONTROL_LINE_1 EN1_Pin
+#define CONTROL_LINE_2 EN2_Pin
+#define CONTROL_LINE_3 EN3_Pin
 // assume all control pin is in the same port
 #define COMMON_CONTROL_PORT EN0_GPIO_Port
 
-#define NUMBER_OF_SEG7 2
+#define NUMBER_OF_SEG7 4
 
 extern int16_t seg7_pattern_list[];
 extern int16_t control_line_list[NUMBER_OF_SEG7];
