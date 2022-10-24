@@ -13,7 +13,7 @@ int16_t seg7_pattern_list[] = {
 };
 
 int16_t control_line_list[NUMBER_OF_SEG7] = {
-    CONTROL_LINE_0, CONTROL_LINE_1,
+    CONTROL_LINE_0, CONTROL_LINE_1, CONTROL_LINE_2, CONTROL_LINE_3,
 };
 
 
