@@ -28,17 +28,10 @@
 // assume all control pin is in the same port
 #define COMMON_CONTROL_PORT EN0_GPIO_Port
 
-#define NUMBER_OF_LED 2
+#define NUMBER_OF_SEG7 2
 
-extern int16_t seg7_pattern_list[] = {
-    SEG7_PATTERN_0, SEG7_PATTERN_1, SEG7_PATTERN_2, SEG7_PATTERN_3,
-    SEG7_PATTERN_4, SEG7_PATTERN_5, SEG7_PATTERN_6, SEG7_PATTERN_7,
-    SEG7_PATTERN_8, SEG7_PATTERN_9,
-};
-
-extern control_line_list[NUMBER_OF_LED] = {
-    CONTROL_LINE_0, CONTROL_LINE_1,
-};
+extern int16_t seg7_pattern_list[];
+extern int16_t control_line_list[NUMBER_OF_SEG7];
 
 void set_output_pattern_7seg(int32_t value);
 void disable_7seg(int32_t value);
