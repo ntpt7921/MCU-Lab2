@@ -244,7 +244,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
     if (counter_half_second <= 0)
     {
-        counter_half_second = counter_led_singular_blink_max;
+        counter_half_second = counter_half_second_max;
 
         last_seg7 = current_seg7;
         current_seg7 = (current_seg7 + 1) % NUMBER_OF_SEG7;
