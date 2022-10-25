@@ -24,20 +24,21 @@ void set_output_pattern_7seg(int32_t value)
         return;
 
     COMMON_SEG7_PATTERN_PORT->BSRR = ~seg7_pattern_list[value];
-    COMMON_SEG7_PATTERN_PORT->BSRR = (uint32_t) (~seg7_pattern_list[value]) << 16u;
+    // remember not to invert the pattern for reset bit
+    COMMON_SEG7_PATTERN_PORT->BSRR = (uint32_t) (seg7_pattern_list[value]) << 16u;
 }
 void disable_7seg(int32_t value)
 {
     if (value < 0 || value > NUMBER_OF_SEG7)
         return;
 
-    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], RESET);
+    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], SET);
 }
 void enable_7seg(int32_t value)
 {
     if (value < 0 || value > NUMBER_OF_SEG7)
         return;
 
-    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], SET);
+    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], RESET);
 }
 
