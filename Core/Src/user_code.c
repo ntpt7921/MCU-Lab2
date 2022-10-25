@@ -6,7 +6,7 @@
  */
 #include "user_code.h"
 
-int16_t seg7_pattern_list[] = {
+uint16_t seg7_pattern_list[] = {
     SEG7_PATTERN_0, SEG7_PATTERN_1, SEG7_PATTERN_2, SEG7_PATTERN_3,
     SEG7_PATTERN_4, SEG7_PATTERN_5, SEG7_PATTERN_6, SEG7_PATTERN_7,
     SEG7_PATTERN_8, SEG7_PATTERN_9,
@@ -33,18 +33,21 @@ void set_output_pattern_7seg(int32_t value)
     if (value < 0 || value > 9)
         return;
 
-    COMMON_SEG7_PATTERN_PORT->BSRR = ~seg7_pattern_list[value];
-    COMMON_SEG7_PATTERN_PORT->BSRR = (uint32_t) (~seg7_pattern_list[value]) << 16u;
+    uint32_t pattern_set = (~seg7_pattern_list[value]) & 0x00FF;
+    uint32_t pattern_reset = (seg7_pattern_list[value] << 16u) & 0x00FF0000;
+
+    COMMON_SEG7_PATTERN_PORT->BSRR = pattern_set | pattern_reset;
 }
 void disable_7seg(int32_t value)
 {
     if (value < 0 || value >= NUMBER_OF_SEG7)
         return;
 
-    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], RESET);
+    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], SET);
 }
 void disable_all_7seg()
 {
+
     for (int32_t i = 0; i < NUMBER_OF_SEG7; i++)
         disable_7seg(i);
 }
@@ -53,7 +56,7 @@ void enable_7seg(int32_t value)
     if (value < 0 || value >= NUMBER_OF_SEG7)
         return;
 
-    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], SET);
+    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], RESET);
 }
 void update7SEG(int index)
 {
@@ -98,10 +101,10 @@ void set_output_pattern_matrix(int32_t value)
         return;
 
     // assume row control from 0 to 8 lies on pin PB8->PB15
-    uint16_t required_pattern = (uint16_t) matrix_buffer[value] << 8u;
+    uint32_t required_pattern_set =  ((~matrix_buffer[value]) << 8u) & 0xFF00;
+    uint32_t required_pattern_reset = (matrix_buffer[value] << 24u) & 0xFF000000;
 
-    COMMON_COLUMN_CONTROL_PORT->BSRR = ~required_pattern;
-    COMMON_COLUMN_CONTROL_PORT->BSRR = (uint32_t) (~required_pattern) << 16u;
+    COMMON_MATRIX_PATTERN_PORT->BSRR = required_pattern_set | required_pattern_reset;
 }
 void disable_column(int32_t value)
 {
@@ -117,16 +120,16 @@ void disable_all_column()
 }
 void enable_column(int value)
 {
-    if (value < 0 || value >= NUMBER_OF_SEG7)
+    if (value < 0 || value >= LED_MATRIX_SIZE)
         return;
 
-    HAL_GPIO_WritePin(COMMON_CONTROL_PORT, control_line_list[value], RESET);
+    HAL_GPIO_WritePin(COMMON_COLUMN_CONTROL_PORT, col_enable_list[value], RESET);
 }
 void updateLEDMatrix(int index)
 {
     disable_all_column();
 
-    set_output_pattern_7seg(index);
+    set_output_pattern_matrix(index);
 
     enable_column(index);
 }
