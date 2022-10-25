@@ -40,11 +40,13 @@
 #define COLUMN_CONTROL_LINE_7 ENM7_Pin
 // assume all column control line is in the same port
 #define COMMON_COLUMN_CONTROL_PORT ENM0_GPIO_Port
+// assume all matrix pattern pin is in the same port
+#define COMMON_MATRIX_PATTERN_PORT ROW0_GPIO_Port
 
 #define NUMBER_OF_SEG7 4
 #define LED_MATRIX_SIZE 8
 
-extern int16_t seg7_pattern_list[];
+extern uint16_t seg7_pattern_list[];
 extern int16_t control_line_list[NUMBER_OF_SEG7];
 extern int index_led;
 extern int led_buffer[NUMBER_OF_SEG7];
